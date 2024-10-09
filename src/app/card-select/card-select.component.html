@@ -1,0 +1,14 @@
+<div routerLink="/produce" class="card">
+    <div class="content">
+      <div class="headings">
+        <!-- <a routerLink="/produce">Click me!</a> -->
+        <h4 class="small-heading">{{ tag }}</h4>
+        <h2 class="large-heading">{{ title }}</h2>
+      </div>
+      <div class="image-placeholder">
+        <img *ngIf="imageUrl" [src]="imageUrl" alt="{{ title }}" class="image" />
+        <span *ngIf="!imageUrl">Image will be here</span>
+      </div>
+    </div>
+  </div>
+  

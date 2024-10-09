@@ -1,0 +1,57 @@
+.card {
+    width: 360px;
+    height: 200px;
+    background-color: #ebded4;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .content {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+  
+  .headings {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 60%; /* Set a maximum width for the headings section */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    text-align: center;
+  }
+  
+  .small-heading {
+    font-size: 16px; /* Adjust font size as needed */
+    margin: 0;
+    font-weight: 100;
+  }
+  
+  .large-heading {
+    font-size: 24px; /* Adjust font size as needed */
+    margin: 0;
+  }
+  
+  .image-placeholder {
+    flex-grow: 1; /* Allows the image section to take the remaining space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Ensures the image covers the space without distortion */
+    border-radius: 0 8px 8px 0; /* Optional: Round the right corners */
+  }
+  
+  .image-placeholder span {
+    font-size: 14px; /* Placeholder text size */
+    color: #999; /* Placeholder text color */
+  }
+  
