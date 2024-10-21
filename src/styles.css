@@ -1,4 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 body {
+    margin: 0;
     font-family: "Aileron", sans-serif;
+}
+html, body { height: 100%; }
+/* body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
+
+.home-button {
+    font-size: 50px;
+    color: gray;
+    padding-top: 20px;
+    padding-left: 20px;
+    height: 60px !important;
+    width: 60px !important;
 }
