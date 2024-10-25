@@ -1,46 +1,68 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatIcon } from '@angular/material/icon'
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {MatIcon} from '@angular/material/icon'
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {ProduceService} from '../services/produce.service';
 
 @Component({
   selector: 'app-produce',
   standalone: true,
   imports: [RouterLink, MatIcon, FormsModule, CommonModule],
   templateUrl: './produce.component.html',
-  styleUrl: './produce.component.css'
+  styleUrl: './produce.component.css',
+  providers: [ProduceService]
 })
 
 export class ProduceComponent implements OnInit {
   produceType: string | null = '';
-  selectedItem: string = '';
-  items: string[] = ['Fruit', 'Vegetables'];
-  dropdownOpen: boolean = false; 
+  produceTypes: string[] = ['Fruit', 'Vegetables'];
+  selectedProduceType: string = '';
+  selectedProduceTypeIndex: number = 0;
+  produceThisWeek: string[] | null = null;
+  dropdownOpen: boolean = false;
   date: string = '';
+  errorMessage: string | undefined;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private produceService: ProduceService) {
+  }
 
   ngOnInit(): void {
     this.produceType = this.route.snapshot.paramMap.get('id');
 
-     this.route.paramMap.subscribe(params => {
-      const id = params.get('id'); 
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
 
-      if (id && this.items.includes(id)) {
-        this.selectedItem = id; 
+      if (id && this.produceTypes.includes(id)) {
+        this.selectedProduceType = id;
       } else {
-        this.selectedItem = this.items[0];
+        this.selectedProduceType = this.produceTypes[0];
       }
     });
 
+    this.selectedProduceTypeIndex = this.produceTypes.indexOf(this.selectedProduceType);
+
     this.date = this.getDate();
+
+    const date = new Date();
+    //*********
+    const week = this.getWeekNumber(date);
+    this.produceService.getItemsByWeek(10, this.selectedProduceTypeIndex).subscribe({
+      next: (data) => {
+        this.produceThisWeek = data;
+      },
+      error: (error) => {
+        this.errorMessage = 'Error fetching data';
+        console.error(error);
+      }
+    });
+    console.log(this.produceThisWeek);
   }
 
   onDropdownChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
-    const selectedValue = selectElement.value; 
+    const selectedValue = selectElement.value;
 
     this.router.navigate(['/produce', selectedValue]);
   }
@@ -50,17 +72,24 @@ export class ProduceComponent implements OnInit {
   }
 
   getDate(): string {
-const date = new Date();
+    const date = new Date();
 
-const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const dayOfWeek = daysOfWeek[date.getDay()];
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayOfWeek = daysOfWeek[date.getDay()];
 
-const dayOfMonth = ('0' + date.getDate()).slice(-2);
+    const dayOfMonth = ('0' + date.getDate()).slice(-2);
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const month = months[date.getMonth()];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const month = months[date.getMonth()];
 
-return `${dayOfWeek}, ${dayOfMonth} ${month}`;
+    return `${dayOfWeek}, ${dayOfMonth} ${month}`;
 
+  }
+
+  getWeekNumber(d: Date): number {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
   }
 }
