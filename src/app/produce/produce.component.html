@@ -1,27 +1,28 @@
 <div style="background-color: #ebded4; height: 100%;">
   <div class="produce-nav">
-    <mat-icon class="home-button" routerLink="/" aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-    
+    <mat-icon class="home-button" routerLink="/" aria-hidden="false" aria-label="Example home icon"
+              fontIcon="home"></mat-icon>
+
     <div class="container">
       <div class="custom-dropdown">
-        <select id="dropdown" class="custom-select" [(ngModel)]="selectedItem" (change)="onDropdownChange($event)">
-          <option *ngFor="let item of items" [value]="item">{{ item }}</option>
+        <select id="dropdown" class="custom-select" [(ngModel)]="selectedProduceType" (change)="onDropdownChange($event)">
+          <option *ngFor="let item of produceTypes" [value]="item">{{ item }}</option>
         </select>
         <mat-icon>{{ dropdownOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
       </div>
     </div>
   </div>
-  
+
   <div class="produce-main">
-    <h1 id="produce-name">Carrot</h1>
+    <h1 id="produce-name">{{ produce }}</h1>
     <div class="image-container">
-      <img id="image" alt="image"/>
+      <img id="image" alt="image" src="{{ imageUrl }}"/>
     </div>
     <div class="date-container">
       <p>{{ date }}</p>
     </div>
     <div class="time-left-container">
-        <p id="time-left">2 weeks left in season</p>
-  </div>
+      <p id="time-left" [style.color]=fontColour>{{ weeksRemaining }} weeks left in season</p>
+    </div>
   </div>
 </div>
