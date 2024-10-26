@@ -14,15 +14,15 @@
   </div>
 
   <div class="produce-main">
-    <h1 id="produce-name">Carrot</h1>
+    <h1 id="produce-name">{{ produce }}</h1>
     <div class="image-container">
-      <img id="image" alt="image" src="./assets/Carrot.png"/>
+      <img id="image" alt="image" src="{{ imageUrl }}"/>
     </div>
     <div class="date-container">
       <p>{{ date }}</p>
     </div>
     <div class="time-left-container">
-      <p id="time-left">2 weeks left in season</p>
+      <p id="time-left" [style.color]=fontColour>{{ weeksRemaining }} weeks left in season</p>
     </div>
   </div>
 </div>
